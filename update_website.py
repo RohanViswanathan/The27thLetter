@@ -79,10 +79,10 @@ for file in os.listdir(directory):
 
 print(captions)
 
-prompt = '''Modify the following html code to be more accessible for the visually impaired, by making the font sizes bigger, fixing spacing issues by 
-adding more space between visual elements. Also make red and green elements more conducive to people that are 
-color-blind, by changing their color and style. You will also replace HTML tags with the tag "img" with code that will allow me to hover over images to 
-show corresponding text. For each of these HTML "img" tags, it will contain a "src" that has a file, and you will look for the corresponding text in a 
+prompt = '''Modify the following HTML code to be more accessible for the visually impaired, by making the font sizes bigger, fixing spacing issues by 
+adding more space between visual elements, and increasing the contrast of images. Also make colors more accessible for people who are colorblind. 
+Rearrage sections and add padding to make the website look nicer, if needed, without removing information. You will also replace HTML tags with the tag 
+"img" with code that will allow me to hover over images to show corresponding text. For each of these HTML "img" tags, it will contain a "src" that has a file, and you will look for the corresponding text in a 
 dictionary I will provide. I will provide the dictionary and HTMl code now. Return just the revised html code.'''
 
 start_time = time.time()
@@ -120,7 +120,7 @@ for part in revised_html_parts:
     i += 1
     response = openai.ChatCompletion.create(
         model = 'gpt-4', 
-        messages=[{"role": "user", "content": prompt + "Dictionary: " + str(captions) +  ". HTML: " + html_content}],
+        messages=[{"role": "user", "content": prompt + "Dictionary: " + str(captions) +  ". HTML: " + part}],
     )
     revised_html += response.choices[0].message.content
 
