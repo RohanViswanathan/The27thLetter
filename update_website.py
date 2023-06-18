@@ -12,7 +12,7 @@ filename = os.path.join(os.path.expanduser("~"), "Downloads", "website-short.htm
 with open(filename, 'r', encoding='utf-8') as file:
     html_content = file.read()
 
-prompt = "Modify the following html code to be more accessible for the visually impaired, by making the font sizes bigger, fixing spacing issues by adding more space between visual elements, and increasing the contrast of images. Also make red and green elements more conducive to people that are color-blind, by changing their color and style. Return just the revised html code."
+prompt = "Modify the following html code to be more accessible for the visually impaired, by making the font sizes bigger, fixing spacing issues by adding more space between visual elements, and increasing the contrast of images. Return just the revised html code."
 
 start_time = time.time()
 
