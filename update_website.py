@@ -90,7 +90,10 @@ html_file_name = get_html_file_name(os.path.join(os.path.expanduser("~"), "Downl
 filename = os.path.join(os.path.expanduser("~"), "Downloads", project_name, recombined_url, html_file_name)
 # filename = os.path.join(os.path.expanduser("~"), "Downloads", "website-short.html")
 with open(filename, 'r', encoding='utf-8') as file:
-    html_content = file.readlines()
+    try:
+        html_content = file.readlines()
+    except UnicodeDecodeError as e:
+        print("Unwanted character: ", e)
 
 # Image Captioning
 
@@ -101,8 +104,7 @@ captions = get_images(directory)
 print(captions)
 
 prompt = '''Modify the following HTML code to be more accessible for the visually impaired, by making the font sizes bigger, fixing spacing issues by 
-adding more space between visual elements, and increasing the contrast of images. Also make colors more accessible for people who are colorblind. Make 
-sure that all content from the intial website is reflected in the new website. Rearrage sections and add padding to make the website look nicer, if needed. 
+adding more space between visual elements. Also increase the contrast of images.
 You will also replace the HTML tags "img" with code so I can hover over images to show text. Each of these HTML "img" tags will contain a "src" that has a 
 file, and you will look for the corresponding text in a dictionary I will provide. I will provide the dictionary and 
 HTMl code now. Return just the revised html code.'''
