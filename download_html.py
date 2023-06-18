@@ -1,5 +1,4 @@
 import tkinter as tk
-import urllib.request
 import os
 from pywebcopy import save_webpage
 
