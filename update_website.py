@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import tkinter as tk
 from pywebcopy import save_webpage
 import replicate
+from tqdm import tqdm
 
 load_dotenv()
 
@@ -14,7 +15,7 @@ def download_html():
     global url
     url = url_entry.get()
     global project_name
-    project_name = "accessible_site"
+    project_name = "gov_accessible_site"
     if url:
         try:
             save_webpage(
@@ -57,7 +58,22 @@ url = url.replace('~', '')
 split_url = url.split('/')
 recombined_url = '/'.join(split_url[2:-1])
 
-filename = os.path.join(os.path.expanduser("~"), "Downloads", project_name, recombined_url, "index.html")
+def get_html_file_name(folder_path):
+    # Get the list of files in the folder
+    files = os.listdir(folder_path)
+
+    # Find the HTML file in the folder
+    html_file_name = None
+    for file in files:
+        if file.endswith(".html"):
+            html_file_name = file
+            break
+
+    return html_file_name
+
+html_file_name = get_html_file_name(os.path.join(os.path.expanduser("~"), "Downloads", project_name, recombined_url))
+
+filename = os.path.join(os.path.expanduser("~"), "Downloads", project_name, recombined_url, html_file_name)
 # filename = os.path.join(os.path.expanduser("~"), "Downloads", "website-short.html")
 with open(filename, 'r', encoding='utf-8') as file:
     html_content = file.readlines()
@@ -115,10 +131,8 @@ if current_part:
 # Process each part with the OpenAI API
 revised_html = ""
 
-i = 0
-for part in revised_html_parts:
-    print(i, "part ...")
-    i += 1
+
+for part in tqdm(revised_html_parts):
     response = openai.ChatCompletion.create(
         model = 'gpt-4', 
         messages=[{"role": "user", "content": prompt + "Dictionary: " + str(captions) +  ". HTML: " + part}],
