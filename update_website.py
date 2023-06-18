@@ -71,6 +71,20 @@ def get_html_file_name(folder_path):
 
     return html_file_name
 
+def get_images(folder_path):
+    captions = {}
+    for root, dirs, files in os.walk(folder_path):
+        for file in files:
+            if file.endswith('.jpg') or file.endswith('.jpeg') or file.endswith('.png') or file.endswith('gif'):
+                recombined_file = os.path.join(root, file)
+                output = replicate.run(
+                    "rmokady/clip_prefix_caption:9a34a6339872a03f45236f114321fb51fc7aa8269d38ae0ce5334969981e4cd8",
+                    input={"image": open(recombined_file, "rb")}
+                )
+                captions[file] = output
+
+    return captions
+
 html_file_name = get_html_file_name(os.path.join(os.path.expanduser("~"), "Downloads", project_name, recombined_url))
 
 filename = os.path.join(os.path.expanduser("~"), "Downloads", project_name, recombined_url, html_file_name)
@@ -82,16 +96,7 @@ with open(filename, 'r', encoding='utf-8') as file:
 
 directory = os.path.join(os.path.expanduser("~"), "Downloads", project_name, recombined_url)
 
-captions = {}
-
-for file in os.listdir(directory):
-    f = os.path.join(directory, file)
-    if f.endswith('.jpg') or f.endswith('.jpeg') or f.endswith('.png') or f.endswith('gif'):
-        output = replicate.run(
-            "rmokady/clip_prefix_caption:9a34a6339872a03f45236f114321fb51fc7aa8269d38ae0ce5334969981e4cd8",
-            input={"image": open(f, "rb")}
-        )
-        captions[file] = output
+captions = get_images(directory)
 
 print(captions)
 
