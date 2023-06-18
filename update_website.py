@@ -9,9 +9,8 @@ load_dotenv()
 
 # Download HTML
 
-url = ""
-
 def download_html():
+    global url
     url = url_entry.get()
     if url:
         try:
@@ -31,6 +30,7 @@ def download_html():
             print("An error occurred while downloading the HTML source code:", str(e))
     else:
         print("Please enter a valid URL.")
+    root.destroy()
 
 root = tk.Tk()
 root.title("Website HTML Downloader")
