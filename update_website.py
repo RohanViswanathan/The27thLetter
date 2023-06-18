@@ -12,13 +12,14 @@ load_dotenv()
 def download_html():
     global url
     url = url_entry.get()
+    global project_name
+    project_name = "accessible_site"
     if url:
         try:
-            folder_name = os.path.join(os.path.expanduser("~"), "Downloads")
             save_webpage(
                 url=url,
-                project_folder=folder_name,
-                project_name="my_site",
+                project_folder=os.path.join(os.path.expanduser("~"), "Downloads"),
+                project_name=project_name,
                 bypass_robots=True,
                 debug=True,
                 open_in_browser=True,
@@ -51,7 +52,11 @@ root.mainloop()
 api_key = os.getenv('OPENAI_KEY')
 openai.api_key = api_key
 
-filename = os.path.join(os.path.expanduser("~"), "Downloads", "website-short.html")
+url = url.replace('~', '')
+split_url = url.split('/')
+recombined_url = '/'.join(split_url[2:-1])
+
+filename = os.path.join(os.path.expanduser("~"), "Downloads", project_name, recombined_url, "index.html")
 with open(filename, 'r', encoding='utf-8') as file:
     html_content = file.read()
 
@@ -73,7 +78,7 @@ revised_html = response.choices[0].message.content
 
 print("Finished query...")
 
-revised_filename = os.path.join(os.path.expanduser("~"), "Downloads", "revised-website.html")
+revised_filename = os.path.join(os.path.expanduser("~"), "Downloads", project_name, recombined_url, "revised-website.html")
 
 with open(revised_filename, 'w', encoding='utf-8') as file:
     file.write(revised_html)
