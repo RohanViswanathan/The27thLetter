@@ -57,8 +57,8 @@ url = url.replace('~', '')
 split_url = url.split('/')
 recombined_url = '/'.join(split_url[2:-1])
 
-# filename = os.path.join(os.path.expanduser("~"), "Downloads", project_name, recombined_url, "index.html")
-filename = os.path.join(os.path.expanduser("~"), "Downloads", "website-short.html")
+filename = os.path.join(os.path.expanduser("~"), "Downloads", project_name, recombined_url, "index.html")
+# filename = os.path.join(os.path.expanduser("~"), "Downloads", "website-short.html")
 with open(filename, 'r', encoding='utf-8') as file:
     html_content = file.readlines()
 
