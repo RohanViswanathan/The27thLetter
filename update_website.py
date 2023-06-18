@@ -60,7 +60,7 @@ recombined_url = '/'.join(split_url[2:-1])
 # filename = os.path.join(os.path.expanduser("~"), "Downloads", project_name, recombined_url, "index.html")
 filename = os.path.join(os.path.expanduser("~"), "Downloads", "website-short.html")
 with open(filename, 'r', encoding='utf-8') as file:
-    html_content = file.read()
+    html_content = file.readlines()
 
 # Image Captioning
 
@@ -89,17 +89,43 @@ start_time = time.time()
 
 print("Starting query...")
 
-print(prompt + "Dictionary: " + str(captions) +  ". HTML: " + html_content)
+revised_html_parts = []
+current_part = ""
+character_count = 0
+max_character_count = 7000
 
-response = openai.ChatCompletion.create(
-    model = 'gpt-4', 
-    messages=[{"role": "user", "content": prompt + "Dictionary: " + str(captions) +  ". HTML: " + html_content}],
+for line in html_content:
+    line = line.strip()
+    line_length = len(line)
+
+    # Check if adding the line will exceed the maximum character count
+    if character_count + line_length > max_character_count:
+        revised_html_parts.append(current_part)
+        current_part = line
+        character_count = line_length
+    else:
+        current_part += line
+        character_count += line_length
+
+# Append the last part
+if current_part:
+    revised_html_parts.append(current_part)
+
+# Process each part with the OpenAI API
+revised_html = ""
+
+i = 0
+for part in revised_html_parts:
+    print(i, "part ...")
+    i += 1
+    response = openai.ChatCompletion.create(
+        model = 'gpt-4', 
+        messages=[{"role": "user", "content": prompt + "Dictionary: " + str(captions) +  ". HTML: " + html_content}],
     )
+    revised_html += response.choices[0].message.content
 
 end_time = time.time()
 duration = end_time - start_time
-
-revised_html = response.choices[0].message.content
 
 print("Finished query...")
 
