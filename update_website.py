@@ -5,8 +5,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# api_key = os.getenv('OPENAI_KEY')
-openai.api_key = ""
+api_key = os.getenv('OPENAI_KEY')
+openai.api_key = api_key
 
 filename = os.path.join(os.path.expanduser("~"), "Downloads", "website-short.html")
 with open(filename, 'r', encoding='utf-8') as file:
@@ -15,6 +15,8 @@ with open(filename, 'r', encoding='utf-8') as file:
 prompt = "Modify the following html code to be more accessible for the visually impaired, by making the font sizes bigger, fixing spacing issues by adding more space between visual elements, and increasing the contrast of images. Also make red and green elements more conducive to people that are color-blind, by changing their color and style. Return just the revised html code."
 
 start_time = time.time()
+
+print("Starting query...")
 
 response = openai.ChatCompletion.create(
     model = 'gpt-4', 
@@ -25,6 +27,8 @@ end_time = time.time()
 duration = end_time - start_time
 
 revised_html = response.choices[0].message.content
+
+print("Finished query...")
 
 revised_filename = os.path.join(os.path.expanduser("~"), "Downloads", "revised-website.html")
 
