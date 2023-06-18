@@ -80,10 +80,11 @@ for file in os.listdir(directory):
 print(captions)
 
 prompt = '''Modify the following HTML code to be more accessible for the visually impaired, by making the font sizes bigger, fixing spacing issues by 
-adding more space between visual elements, and increasing the contrast of images. Also make colors more accessible for people who are colorblind. 
-Rearrage sections and add padding to make the website look nicer, if needed, without removing information. You will also replace HTML tags with the tag 
-"img" with code that will allow me to hover over images to show corresponding text. For each of these HTML "img" tags, it will contain a "src" that has a file, and you will look for the corresponding text in a 
-dictionary I will provide. I will provide the dictionary and HTMl code now. Return just the revised html code.'''
+adding more space between visual elements, and increasing the contrast of images. Also make colors more accessible for people who are colorblind. Make 
+sure that all content from the intial website is reflected in the new website. Rearrage sections and add padding to make the website look nicer, if needed. 
+You will also replace the HTML tags "img" with code so I can hover over images to show text. Each of these HTML "img" tags will contain a "src" that has a 
+file, and you will look for the corresponding text in a dictionary I will provide. I will provide the dictionary and 
+HTMl code now. Return just the revised html code.'''
 
 start_time = time.time()
 
